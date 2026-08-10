@@ -1,0 +1,82 @@
+.wrap {
+  text-align: center;
+  margin: 4rem 0;
+}
+
+
+.card-wrap {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.job-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  width: 220px;
+  margin: 10px;
+  display: inline-block;
+}
+
+.job-card h4 {
+  margin: 0 0 8px;
+}
+
+.job-card p {
+  margin: 6px 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.status.applied {
+  background: #e8f0fe;
+  color: #2563eb;
+}
+
+.status.interview {
+  background: #fff4cc;
+  color: #b45309;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.status.selected {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.job-search {
+  border-bottom: 4px dotted #ccc;
+  margin: 3rem auto;
+  width: 40%;
+  padding-bottom: 3rem;
+}
+.job-search input {
+  width: 50%;
+}
+
+.job-tracker {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background-color: #eee;
+  width: 40%;
+  margin: 0 auto 4rem auto;
+  border: 4px dotted #ccc;
+}
+
+.job-tracker span {
+  display: block;
+  font-size: 20px;
+  padding-top: 1rem;
+}
