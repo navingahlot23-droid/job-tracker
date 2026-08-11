@@ -1,6 +1,7 @@
 .wrap {
   text-align: center;
-  margin: 4rem 0;
+  margin: 4rem auto;
+  max-width: 768px;
 }
 
 
@@ -57,12 +58,15 @@
 }
 .job-search {
   border-bottom: 4px dotted #ccc;
-  margin: 3rem auto;
-  width: 40%;
+  margin: 3rem 0;
   padding-bottom: 3rem;
 }
+.job-search input, .job-search select {
+  width: 100%;
+}
+
 .job-search input {
-  width: 50%;
+  margin-bottom: 1rem;
 }
 
 .job-tracker {
@@ -70,8 +74,7 @@
   justify-content: center;
   gap: 20px;
   background-color: #eee;
-  width: 40%;
-  margin: 0 auto 4rem auto;
+  margin-bottom: 4rem;
   border: 4px dotted #ccc;
 }
 
@@ -79,4 +82,21 @@
   display: block;
   font-size: 20px;
   padding-top: 1rem;
+}
+
+.clr-job {
+  border-bottom: 4px dotted #ccc;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  margin-top: 3rem;
+}
+
+.clr-job .clr-btn {
+  background-color: #d8d0d0;
+    border-color: gray;
+    padding: .25rem .8rem;
+    border-style: solid;
+    font-size: 0.8rem;
+    border-radius: .5rem;
+    cursor: pointer;
 }

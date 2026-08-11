@@ -80,6 +80,11 @@ function App() {
     localStorage.setItem('jobs', JSON.stringify(jobs))
   }, [jobs])
 
+  const clearAllJobs = () => {
+    window.confirm("Are you really want to delete all the jobs?")
+    setJobs([])
+  }
+
   return (
     <>
       <section className='wrap'>
@@ -93,33 +98,38 @@ function App() {
           <h3>Selected <span>{selectedJobs}</span></h3>
         </div>
 
-
         <JobForm company={company} role={role} setCompany={setCompany} setRole={setRole} status={status} setStatus={setStatus} onAdd={addJob} onUpdate={updateJob} editId={editId} />
-
-
-
-        <div className='job-search'>
-          <input type='text' placeholder='Search jobs by company or role' value={search} onChange={(e) => setsearch(e.target.value)} />
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="">Search by Status</option>
-            <option value="Applied">Applied</option>
-            <option value="Interview">Interview</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Selected">Selected</option>
-          </select>
-        </div>
 
         {jobs.length === 0 ? (
           <p>No jobs yet.</p>
-        ) : filteredJobs.length === 0 ? (
-          <p>No matching jobs found.</p>
         ) : (
-          <JobList
-            jobs={filteredJobs}
-            onDelete={deleteJob}
-            onEdit={editJob}
-          />
-        )}
+          <>
+            <div className='clr-job'>
+              <button className='clr-btn' onClick={clearAllJobs}>Clear All Jobs</button>
+            </div>
+            <div className='job-search'>
+              <input type='text' placeholder='Search jobs by company or role' value={search} onChange={(e) => setsearch(e.target.value)} />
+              <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                <option value="">Search by Status</option>
+                <option value="Applied">Applied</option>
+                <option value="Interview">Interview</option>
+                <option value="Rejected">Rejected</option>
+                <option value="Selected">Selected</option>
+              </select>
+            </div>
+            {filteredJobs.length === 0 ? (
+              <p>No matching jobs found.</p>
+            ) : (
+              <JobList
+                jobs={filteredJobs}
+                onDelete={deleteJob}
+                onEdit={editJob}
+              />
+            )
+            }
+          </>
+          )
+        }
       </section>
     </>
   )
