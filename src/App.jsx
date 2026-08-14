@@ -1,26 +1,41 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import JobCard from './components/JobCard'
 import JobForm from './components/JobForm'
 import JobList from './components/JobList'
 
 function App() {
-  const [jobs, setJobs] = useState(() => {
+  const [jobs, setJobs] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
+  useEffect(() => {
     const savedJobs = localStorage.getItem('jobs')
-    return savedJobs ? JSON.parse(savedJobs) : []
-  })
+    if (savedJobs) {
+      setJobs(JSON.parse(savedJobs))
+    }
+    setIsLoaded(true)
+  }, [])
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('jobs', JSON.stringify(jobs))
+    }
+  }, [jobs, isLoaded])
+
   const [company, setCompany] = useState('')
   const [role, setRole] = useState('')
   const [status, setStatus] = useState('Select')
   const [editId, setEditId] = useState(null)
-  const [search, setsearch] = useState('')
+  const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
 
   const addJob = () => {
+    if (!company.trim() || !role.trim() || status === 'Select') {
+      alert('Please fill all the fields');
+      return
+    }
     const newJob = {
       id: Date.now(),
-      company: company, // when the property name and variable name are the same, we can directly write 'company'. This is called object property shorthand.
-      role,
+      company: company.trim(), // when the property name and variable name are the same, we can directly write 'company'. This is called object property shorthand.
+      role: role.trim(),
       status
     }
     setJobs([...jobs, newJob]);
@@ -42,13 +57,24 @@ function App() {
     setEditId(job.id)
   }
 
+  const cancelEdit = () => {
+    setCompany('')
+    setRole('')
+    setStatus('Select')
+    setEditId(null)
+  }
+
   const updateJob = () => {
+    if (!company.trim() || !role.trim() || status === 'Select') {
+      alert('Please fill all the fields');
+      return
+    }
     const updatedJobs = jobs.map((job) => {
       if (job.id === editId) {
         return {
           ...job,
-          company,
-          role,
+          company: company.trim(),
+          role: role.trim(),
           status
         }
       }
@@ -76,13 +102,14 @@ function App() {
   const rejectedjobs = jobs.filter((job) => job.status === 'Rejected').length
   const selectedJobs = jobs.filter((job) => job.status === 'Selected').length
 
-  useEffect(() => {
-    localStorage.setItem('jobs', JSON.stringify(jobs))
-  }, [jobs])
-
   const clearAllJobs = () => {
-    window.confirm("Are you really want to delete all the jobs?")
-    setJobs([])
+    const confirmDelete = window.confirm('Are you sure you want to delete all the jobs?')
+
+    if (confirmDelete) {
+      setJobs([])
+      setSearch('')
+      setFilterStatus('')
+    }
   }
 
   return (
@@ -98,7 +125,7 @@ function App() {
           <h3>Selected <span>{selectedJobs}</span></h3>
         </div>
 
-        <JobForm company={company} role={role} setCompany={setCompany} setRole={setRole} status={status} setStatus={setStatus} onAdd={addJob} onUpdate={updateJob} editId={editId} />
+        <JobForm company={company} role={role} setCompany={setCompany} setRole={setRole} status={status} setStatus={setStatus} onAdd={addJob} onUpdate={updateJob} onCancel={cancelEdit} editId={editId} />
 
         {jobs.length === 0 ? (
           <p>No jobs yet.</p>
@@ -108,14 +135,19 @@ function App() {
               <button className='clr-btn' onClick={clearAllJobs}>Clear All Jobs</button>
             </div>
             <div className='job-search'>
-              <input type='text' placeholder='Search jobs by company or role' value={search} onChange={(e) => setsearch(e.target.value)} />
+              <input type='text' placeholder='Search jobs by company or role' value={search} onChange={(e) => setSearch(e.target.value)} />
               <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-                <option value="">Search by Status</option>
+                <option value="">All Status</option>
                 <option value="Applied">Applied</option>
                 <option value="Interview">Interview</option>
                 <option value="Rejected">Rejected</option>
                 <option value="Selected">Selected</option>
               </select>
+              {
+                (search || filterStatus) && (
+                  <button onClick={() => { setSearch(''); setFilterStatus('') }}>Clear Filters</button>
+                )
+              }
             </div>
             {filteredJobs.length === 0 ? (
               <p>No matching jobs found.</p>
@@ -128,7 +160,7 @@ function App() {
             )
             }
           </>
-          )
+        )
         }
       </section>
     </>

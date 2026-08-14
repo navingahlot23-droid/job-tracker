@@ -1,4 +1,4 @@
-function JobForm({ company, role, setCompany, setRole, status, setStatus, onAdd, onUpdate, editId }) {
+function JobForm({ company, role, setCompany, setRole, status, setStatus, onAdd, onUpdate, onCancel, editId }) {
     return (
         <>
             <input type='text' placeholder='Company' value={company} onChange={(e) => setCompany(e.target.value)} />
@@ -10,7 +10,12 @@ function JobForm({ company, role, setCompany, setRole, status, setStatus, onAdd,
                 <option value="Rejected">Rejected</option>
                 <option value="Selected">Selected</option>
             </select>
-            <button onClick={editId ? onUpdate : onAdd}>{editId ? "Update Job" : "Add Job"}</button>
+            {editId ? (
+                <>
+                    <button type="submit" onClick={onUpdate}>Update Job</button>
+                    <button type="button" onClick={onCancel}>Cancel</button>
+                </>
+            ): <button type="submit" onClick={onAdd}>Add Job</button>}
         </>
     )
 }

@@ -62,12 +62,10 @@
   padding-bottom: 3rem;
 }
 .job-search input, .job-search select {
-  width: 100%;
+  width: 100%; margin-bottom: 1rem;
 }
 
-.job-search input {
-  margin-bottom: 1rem;
-}
+
 
 .job-tracker {
   display: flex;
